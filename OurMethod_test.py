@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 
 
 trendfiledir = "./trend/"
-directory = "~/python/Tony/MasterExperiment/YahooBenchmark/A4Benchmark/A4Benchmark-TS"
+directory = "./A4Benchmark/A4Benchmark-TS"
 model_directory = "Softmax_multipletrend_full_0"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

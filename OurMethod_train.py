@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 import json
 import logging
 import random
@@ -15,10 +16,7 @@ from torch.nn.modules.linear import Linear
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 
-## 20 個 random variables
-batch_size=200
-lr = 0.005
-epochs = 200
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 Folder_PATH = "./mixer_multiple_full/"
 FORMAT = '%(asctime)s %(levelname)s: %(message)s'
@@ -80,33 +78,37 @@ def ReadFileItem(FolderPath):
     return FileNameContainer
 
 def TrainValidationTestSplit(FileContainer):
-    # Test = random.sample(FileContainer, int(len(FileContainer)*0.2))
-    # for file in Test:
-    #     FileContainer.remove(file)
     Validation = random.sample(FileContainer, int(len(FileContainer)*0.2))
     for file in Validation:
         FileContainer.remove(file)
-    return FileContainer, Validation#, Test
+    return FileContainer, Validation
+
+def ParseInput():
+    _parser = argparse.ArgumentParser()
+    _parser.add_argument("--epoch", default = 200, help = "Epoch", type=int)
+    _parser.add_argument("--lr", default=0.005, help="Learning rate", type=float)
+    _parser.add_argument("--batch", default=200, help="Batch size", type=int)
+    args = _parser.parse_args()
+    epochs, lr, batch_size = args.epoch, args.lr, args.batch
+    return epochs, lr, batch_size
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, filename="Softmax_mul_full_Log.log", filemode='w', format=FORMAT)
     test_mse_std=[]
     test_mae_std=[]
     best_model_epoch_list=[]
-    
+    epochs, lr, batch_size = ParseInput()
     for time in tqdm(range(5)):
         ## Get Full dataset filename
         FileNames = ReadFileItem(Folder_PATH)
         logging.info("Success => Get file name")
-        # train, validation, test = TrainValidationTestSplit(FileNames)
         train, validation = TrainValidationTestSplit(FileNames)
         logging.info("Train size: "+str(len(train)))
         logging.info("Validation size: "+str(len(validation)))
-        # logging.info("Test size: "+str(len(test)))
         ## Trasform to tensor
         train_tensor = TensorData(train)
         validation_tensor = TensorData(validation)
-        # test_tensor = TensorData(test)
         ## Transform to data loader
         train_loader = DataLoader(
                 dataset=train_tensor,
@@ -120,11 +122,6 @@ if __name__ == '__main__':
             num_workers=8,
             shuffle=True
         )
-        # test_loader = DataLoader(
-        #     dataset=test_tensor,
-        #     batch_size=batch_size,
-        #     num_workers=8
-        # )
         model = ConvNet()
         model.to(device, dtype=torch.double)
         loss_mse = nn.MSELoss()
@@ -185,28 +182,5 @@ if __name__ == '__main__':
         plt.savefig("Softmax_mul_full_train_mse_"+str(time)+".pdf")
         plt.close()
 
-        ## Test
-        # print("test")
-        # test_mse = 0
-        # test_mae = 0
-        # count=0
-        # model = best_model
-        # f = open("Softmax_mul_full_test_"+str(time)+".txt", "w")
-        # with torch.no_grad():
-        #     for batch_idx, (data, target) in enumerate(test_loader):
-        #         data, target = data.to(device), target.to(device)
-        #         y_hat = model(data)
-        #         test_mse += loss_mse(y_hat, target)
-        #         test_mae += loss_mae(y_hat, target)
-        #         for i in range(len(y_hat)):
-        #             f.write("Target two param: " + str(target[i].cpu().detach().numpy()) + "\n")
-        #             f.write("Predict two param: " + str(y_hat[i].cpu().detach().numpy()) + "\n")
-        #             f.write("--------------------------------------\n")
-        # test_mse_std.append(test_mse.cpu().detach().item() / len(test_loader))
-        # test_mae_std.append(test_mae.cpu().detach().item() / len(test_loader))
 
     logging.info("best train model epoch: "+ str(best_model_epoch_list))
-    # logging.info("test MSE: "+ str(test_mse_std))
-    # logging.info("test MSE 樣本標準差: "+str(np.std(test_mse_std, ddof=1)))
-    # logging.info("test MAE: "+ str(test_mae_std))
-    # logging.info("test MAE 樣本標準差: "+str(np.std(test_mae_std, ddof=1)))

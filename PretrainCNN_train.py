@@ -82,7 +82,6 @@ def ParseInput():
     _parser.add_argument("--batch", default=1000, help="Batch size", type=int)
     args = _parser.parse_args()
     epochs, lr, batch_size = args.epoch, args.lr, args.batch
-
     return epochs, lr, batch_size
 
 if __name__ == '__main__':
