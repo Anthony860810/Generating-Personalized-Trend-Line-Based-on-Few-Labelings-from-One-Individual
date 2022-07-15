@@ -21,7 +21,7 @@ lr = 0.05
 epochs = 250
 
 
-directory = "../python/Tony/MasterExperiment/Classification/mixer_multiple_full/"
+directory = "./mixer_multiple_full/"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 FORMAT = '%(asctime)s %(levelname)s: %(message)s'
 
@@ -58,8 +58,6 @@ class ConvNet(nn.Module):
         out = out.reshape(out.size(0), -1)
         out = self.fc(out)
         return out
-
-
 
 def LoadModel():
     model = ConvNet()
@@ -104,6 +102,7 @@ if __name__ == '__main__':
         batch_size = batch_size,
         num_workers = 8
     )
+
     model = LoadModel()
     loss_func = nn.MSELoss()
     optimizer = torch.optim.Adamax(model.parameters(), lr=lr)

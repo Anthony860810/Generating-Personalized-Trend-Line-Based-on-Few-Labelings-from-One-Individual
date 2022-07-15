@@ -12,11 +12,8 @@ from torch.utils.data import Dataset, DataLoader
 import logging
 
 FORMAT = '%(asctime)s %(levelname)s: %(message)s'
-# username = '"user29": '
-# file = "./user29/user29.json"
-# img_dir = "./s2_img_user29/"
 trendfiledir = "./trend/"
-directory = "../python/Tony/MasterExperiment/YahooBenchmark/A4Benchmark/A4Benchmark-TS"
+directory = "./A4Benchmark/A4Benchmark-TS"
 model_directory = "pretrainedcnn_model"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

@@ -16,12 +16,8 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.dataset import TensorDataset
 from sklearn.model_selection import train_test_split
 
-batch_size = 1000
-lr = 0.05
-epochs = 5000
 
-
-directory = "../python/Tony/MasterExperiment/Classification/mixer_multiple_full/"
+directory = "./mixer_multiple_full/"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 FORMAT = '%(asctime)s %(levelname)s: %(message)s'
 
@@ -125,7 +121,7 @@ if __name__ == '__main__':
         model.eval()
         with torch.no_grad():
             for batch_idx, (data, target) in enumerate(validation_loader):
-                data, target = data.to(device), target.to(device)
+                data, target = data.to(device), target.to(device
                 y_hat = model(data)
                 target = target.to(dtype=float)
                 loss = loss_func(y_hat, target)

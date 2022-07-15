@@ -12,7 +12,7 @@ import logging
 
 FORMAT = '%(asctime)s %(levelname)s: %(message)s'
 trendfiledir = "./trend/"
-directory = "../python/Tony/MasterExperiment/YahooBenchmark/A4Benchmark/A4Benchmark-TS"
+directory = "./A4Benchmark/A4Benchmark-TS"
 model_directory = "pretrainedlstm_model"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 

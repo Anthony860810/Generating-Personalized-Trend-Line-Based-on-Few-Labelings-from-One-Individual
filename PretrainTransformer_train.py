@@ -17,12 +17,8 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.dataset import TensorDataset
 from sklearn.model_selection import train_test_split
 
-batch_size = 1000
-lr = 0.05
-epochs =  50
 
-
-directory = "../python/Tony/MasterExperiment/Classification/mixer_multiple_full/"
+directory = "./mixer_multiple_full/"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 FORMAT = '%(asctime)s %(levelname)s: %(message)s'
 

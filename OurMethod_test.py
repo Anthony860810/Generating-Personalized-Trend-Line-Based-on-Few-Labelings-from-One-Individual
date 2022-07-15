@@ -11,7 +11,7 @@ from torch.utils.data import Dataset, DataLoader
 
 trendfiledir = "./trend/"
 directory = "./A4Benchmark/A4Benchmark-TS"
-model_directory = "Softmax_multipletrend_full_0"
+model_directory = "OurMethod_model"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def filename(index):
@@ -308,7 +308,7 @@ if __name__ == '__main__':
         simulate_trend = np.array(l1_norm)*user_pattern[idx][0] + np.array(hp)*user_pattern[idx][1] + np.array(stl)*user_pattern[idx][2]
         simulate_trends.append(simulate_trend)
         # Draw(value, user_trends[idx], simulate_trend, idx)
-    Situation1_Evaluation(simulate_trends, user_trends, values)
+    #Situation1_Evaluation(simulate_trends, user_trends, values)
     Average_pattern = AverageUserPattern(user_pattern)
     Weights_pattern = WeightsUserPattern(simulate_trends, user_trends, user_pattern)
     Two_Ways_RealWorldTest_Evaluation(Average_pattern, Weights_pattern, user_trends)

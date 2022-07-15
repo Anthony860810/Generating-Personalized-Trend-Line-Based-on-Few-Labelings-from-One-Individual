@@ -17,7 +17,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.dataset import TensorDataset
 
 trendfiledir = "./trend/"
-directory = "~/python/Tony/MasterExperiment/YahooBenchmark/A4Benchmark/A4Benchmark-TS"
+directory = "./A4Benchmark/A4Benchmark-TS"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
@@ -218,7 +218,6 @@ if __name__ == '__main__':
             optimizer.zero_grad()
         train_loss.append(running_loss)
         print("Epoch_" + str(epoch) + "_loss: " + str(running_loss) )
-    DrawTrainLoss(train_loss)
     ## Test data
     MSE_errors = []
     SMAPE_errors=[]

@@ -10,9 +10,8 @@ import matplotlib.pyplot as plt
 import random
 import json
 
-DataPath = "../YahooBenchmark/A4Benchmark/"
-OutputPath = "../Classification/mixer_multiple_full/"
-OutputPath2 = "../Classification/image_mixer_multiple_full/"
+DataPath = "./A4Benchmark/"
+OutputPath = "./mixer_multiple_full/"
 
 count=0
 weight=200000
@@ -46,8 +45,7 @@ for fileName in os.listdir(DataPath):
             for j in np.arange(0, round(1.01-l1_weight,2), 0.01):
                 hp_weight = abs(round(j,2))
                 stl_weight = abs(round(1-l1_weight-hp_weight,2))
-                # print("l1_weight: ",l1_weight, "hp_weight: ", hp_weight, "stl_weight: ", stl_weight)
-                # print("-----------------------------------------------")
+
                 f.write(fileName+"\n")
                 f.write(("l1_weight: " + str(l1_weight) + "\thp_weight: "+ str(hp_weight) + "\tstl_weight: "+ str(stl_weight)+"\n"))
                 f.write("-----------------------------------------------\n")
@@ -55,11 +53,11 @@ for fileName in os.listdir(DataPath):
                 
                 trend = hp_weight*hpfilter_trend + l1_weight*l1norm_trend + stl_weight*stl_res.trend
                 ## draw plot
-                plt.plot(df["value"], label="value")
-                plt.plot(trend, label="trend")
-                plt.savefig(OutputPath2+str(count)+".png")
-                plt.clf()
-                plt.close()
+                # plt.plot(df["value"], label="value")
+                # plt.plot(trend, label="trend")
+                # plt.savefig(OutputPath2+str(count)+".png")
+                # plt.clf()
+                # plt.close()
             
                 output = {
                             "value":y.tolist(),
@@ -71,4 +69,3 @@ for fileName in os.listdir(DataPath):
                     json.dump(output, file)   
                 count+=1
 f.close()
-print("count: ", count)

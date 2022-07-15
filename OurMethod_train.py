@@ -72,7 +72,6 @@ class ConvNet(nn.Module):
 
 def ReadFileItem(FolderPath):
     FileNameContainer=[]
-    idx=0
     for fileName in os.listdir(FolderPath):
         FileNameContainer.append(os.path.join(FolderPath,fileName))
     return FileNameContainer
@@ -99,88 +98,87 @@ if __name__ == '__main__':
     test_mae_std=[]
     best_model_epoch_list=[]
     epochs, lr, batch_size = ParseInput()
-    for time in tqdm(range(5)):
-        ## Get Full dataset filename
-        FileNames = ReadFileItem(Folder_PATH)
-        logging.info("Success => Get file name")
-        train, validation = TrainValidationTestSplit(FileNames)
-        logging.info("Train size: "+str(len(train)))
-        logging.info("Validation size: "+str(len(validation)))
-        ## Trasform to tensor
-        train_tensor = TensorData(train)
-        validation_tensor = TensorData(validation)
-        ## Transform to data loader
-        train_loader = DataLoader(
-                dataset=train_tensor,
-                batch_size=batch_size,
-                num_workers=8,
-                shuffle=True
-            )
-        validation_loader = DataLoader(
-            dataset=validation_tensor,
+    ## Get Full dataset filename
+    FileNames = ReadFileItem(Folder_PATH)
+    logging.info("Success => Get file name")
+    train, validation = TrainValidationTestSplit(FileNames)
+    logging.info("Train size: "+str(len(train)))
+    logging.info("Validation size: "+str(len(validation)))
+    ## Trasform to tensor
+    train_tensor = TensorData(train)
+    validation_tensor = TensorData(validation)
+    ## Transform to data loader
+    train_loader = DataLoader(
+            dataset=train_tensor,
             batch_size=batch_size,
             num_workers=8,
             shuffle=True
         )
-        model = ConvNet()
-        model.to(device, dtype=torch.double)
-        loss_mse = nn.MSELoss()
-        loss_mae = nn.L1Loss()
-        optimizer = torch.optim.Adamax(model.parameters(), lr=lr)
-        best_validation = sys.maxsize
-        best_model = model
-        best_model_epoch=0
+    validation_loader = DataLoader(
+        dataset=validation_tensor,
+        batch_size=batch_size,
+        num_workers=8,
+        shuffle=True
+    )
+    model = ConvNet()
+    model.to(device, dtype=torch.double)
+    loss_mse = nn.MSELoss()
+    loss_mae = nn.L1Loss()
+    optimizer = torch.optim.Adamax(model.parameters(), lr=lr)
+    best_validation = sys.maxsize
+    best_model = model
+    best_model_epoch=0
+    ## Train
+    mse_loss_list=[]
+    mae_loss_list=[]
+    validation_mse_loss=[]
+    logging.info("Train")
+    for epoch in tqdm(range(epochs)):
         ## Train
-        mse_loss_list=[]
-        mae_loss_list=[]
-        validation_mse_loss=[]
-        logging.info("Train")
-        for epoch in tqdm(range(epochs)):
-            ## Train
-            model.train()
-            current_epoch_mse_loss = 0.0
-            current_epoch_mae_loss = 0.0
-            for batch_idx, (data, target) in enumerate(train_loader):
+        model.train()
+        current_epoch_mse_loss = 0.0
+        current_epoch_mae_loss = 0.0
+        for batch_idx, (data, target) in enumerate(train_loader):
+            data, target = data.to(device), target.to(device)
+            y_hat = model(data)
+            target = target.to(dtype=float)
+            loss = loss_mse(y_hat, target)
+            current_epoch_mse_loss+=loss.item()
+            loss_L1 = loss_mae(y_hat, target)
+            current_epoch_mae_loss+=loss_L1.item()
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+        logging.info("Epoch_" + str(epoch) + "_mse_loss: " + str(current_epoch_mse_loss/len(train_loader)))
+
+        mse_loss_list.append(current_epoch_mse_loss/len(train_loader))
+        mae_loss_list.append(current_epoch_mae_loss/len(train_loader))
+        ## Validation
+        model.eval()
+        validation_loss = 0.0
+        with torch.no_grad():
+            for batch_idx, (data, target) in enumerate(validation_loader):
                 data, target = data.to(device), target.to(device)
                 y_hat = model(data)
                 target = target.to(dtype=float)
                 loss = loss_mse(y_hat, target)
-                current_epoch_mse_loss+=loss.item()
-                loss_L1 = loss_mae(y_hat, target)
-                current_epoch_mae_loss+=loss_L1.item()
-                loss.backward()
-                optimizer.step()
-                optimizer.zero_grad()
-            logging.info("Epoch_" + str(epoch) + "_mse_loss: " + str(current_epoch_mse_loss/len(train_loader)))
-
-            mse_loss_list.append(current_epoch_mse_loss/len(train_loader))
-            mae_loss_list.append(current_epoch_mae_loss/len(train_loader))
-            ## Validation
-            model.eval()
-            validation_loss = 0.0
-            with torch.no_grad():
-                for batch_idx, (data, target) in enumerate(validation_loader):
-                    data, target = data.to(device), target.to(device)
-                    y_hat = model(data)
-                    target = target.to(dtype=float)
-                    loss = loss_mse(y_hat, target)
-                    validation_loss+=loss.item()
-            if validation_loss < best_validation:
-                best_validation = validation_loss
-                best_model = model
-                best_model_epoch = epoch
-            validation_mse_loss.append(validation_loss/len(validation_loader))
-        try:
-            torch.save(best_model.state_dict(),"Softmax_multipletrend_full_"+str(time))
-            logging.info("Success => save model")
-        except:
-            logging.error("Failed => save model")
-        # model.load_state_dict(torch.load("Classifier_softmax"))
-        best_model_epoch_list.append(best_model_epoch)
-        plt.plot(mse_loss_list, label='Train')
-        plt.plot(validation_mse_loss, label='Validation')
-        plt.savefig("Softmax_mul_full_train_mse_"+str(time)+".pdf")
-        plt.close()
+                validation_loss+=loss.item()
+        if validation_loss < best_validation:
+            best_validation = validation_loss
+            best_model = model
+            best_model_epoch = epoch
+        validation_mse_loss.append(validation_loss/len(validation_loader))
+    try:
+        torch.save(best_model.state_dict(),"OurMethod_model")
+        logging.info("Success => save model")
+    except:
+        logging.error("Failed => save model")
+    # model.load_state_dict(torch.load("Classifier_softmax"))
+    best_model_epoch_list.append(best_model_epoch)
+    plt.plot(mse_loss_list, label='Train')
+    plt.plot(validation_mse_loss, label='Validation')
+    plt.savefig("Softmax_mul_full_train_mse.pdf")
+    plt.close()
 
 
     logging.info("best train model epoch: "+ str(best_model_epoch_list))
