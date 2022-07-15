@@ -94,7 +94,7 @@ python PretrainCNN_finetune_test.py --epoch 3 --lr 0.01 --batch 10 --user 29
 ### PretrainLSTM
 #### Train
 ```
-
+python PretrainLSTM_train.py --epoch 1 --lr 0.01 --batch 1000
 ```
 #### Finetune and Test
 ```
@@ -104,7 +104,7 @@ python PretrainLSTM_finetune_test.py --epoch 3 --lr 0.01 --batch 10 --user 29
 ### Pretrain Fully Connected
 #### Train
 ```
-
+python PretrainFullyConnected_train.py --epoch 1 --lr 0.01 --batch 1000
 ```
 #### Finetune and Test
 ```
@@ -114,8 +114,7 @@ python PretrainFullyConnected_finetune_test.py --epoch 3 --lr 0.01 --batch 10 --
 ### Pretrain Transformer
 #### Train
 ```
-
-
+python PretrainTransformer_train.py --epoch 1 --lr 0.01 --batch 1000
 ```
 #### Finetune and Test
 ```
