@@ -274,7 +274,7 @@ def ParseInput():
     _parser.add_argument("--user", default="29", help="User")
     args = _parser.parse_args()
     batch_size, user = args.batch, args.user
-    file = './user'+user+"/user"+user+".json"
+    file = './Done_user/user'+user+"/user"+user+".json"
     img_dir = "./s2_img_user"+user+"/"
     return batch_size, user, file, img_dir
 

@@ -5,7 +5,8 @@ Tested under Python 3.8.13 in Ubuntu.
 
 Install the required packages by
 ```
-conda env create -f environment.yaml 
+conda env create -f environment.yaml
+conda activate env_tykuo
 ```
 
 
@@ -65,6 +66,11 @@ mkdir s2_img_user29
 cd s2_img_user29
 mkdir 1_v2 8_v2 12_v2 20_v2 21_v2 66 74 81 88 91
 ```
+### GenerateSimulateUser
+```
+python GenerateSimulateUser.py
+```
+
 ### CNN
 ```
 python CNN.py --epoch 3 --lr 0.01 --batch 10 --user 29
