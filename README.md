@@ -10,7 +10,7 @@ conda env create -f environment.yaml
 
 
 ## File Description
-Data Folder Link: https://drive.google.com/drive/folders/1w4kPEy4SR8acnEaMqhj7-NhbGl4msCv7?usp=sharing
+Data Folder Link: https://drive.google.com/file/d/1G3igDUEtPkxQFHaeypqas4AkbsC4fzzf/view?usp=sharing
 * A4Benchmark: YahooS5 A4 Dataset csv file
 * Done_s2_img_user: The pictures that model predict with differnt user
 * Done_user: The user data  json file and pictures that user draw.
