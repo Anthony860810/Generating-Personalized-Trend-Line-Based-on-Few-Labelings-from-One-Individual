@@ -143,7 +143,7 @@ if __name__ == '__main__':
                 min_loss = validation_running_loss
                 best_model = model
                 best_model_epoch = epoch
-    DrawTrainLoss(train_loss)
+    # DrawTrainLoss(train_loss)
     torch.save(best_model.state_dict(),"pretrainedcnn_model")
     logging.info("Best model epoch: "+str(best_model_epoch))
     

@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import random
 import json
 
-DataPath = "./A4Benchmatk_GenerateSimulateUser/"
+DataPath = "./A4Benchmark_GenerateSimulateUser/"
 OutputPath = "./mixer_multiple_full/"
 
 count=0

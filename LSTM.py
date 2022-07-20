@@ -188,7 +188,7 @@ if __name__ == '__main__':
             optimizer.zero_grad()
             print("Epoch_" + str(epoch) + "_loss: " + str(running_loss) )
         train_loss.append(running_loss)
-    DrawTrainLoss(train_loss)
+    # DrawTrainLoss(train_loss)
     ## Test data
     MSE_errors = []
     SMAPE_errors=[]

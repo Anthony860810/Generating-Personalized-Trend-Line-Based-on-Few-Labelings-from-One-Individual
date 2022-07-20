@@ -121,7 +121,7 @@ if __name__ == '__main__':
         model.eval()
         with torch.no_grad():
             for batch_idx, (data, target) in enumerate(validation_loader):
-                data, target = data.to(device), target.to(device
+                data, target = data.to(device), target.to(device)
                 y_hat = model(data)
                 target = target.to(dtype=float)
                 loss = loss_func(y_hat, target)
@@ -131,7 +131,6 @@ if __name__ == '__main__':
                 min_loss = validation_running_loss
                 best_model = model
                 best_model_epoch = epoch
-    DrawTrainLoss(train_loss)
+    #DrawTrainLoss(train_loss)
     torch.save(best_model.state_dict(),"pretrainedfc_model")
     logging.info("Best model epoch: "+str(best_model_epoch))
-    

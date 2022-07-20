@@ -175,10 +175,8 @@ if __name__ == '__main__':
         logging.error("Failed => save model")
     # model.load_state_dict(torch.load("Classifier_softmax"))
     best_model_epoch_list.append(best_model_epoch)
-    plt.plot(mse_loss_list, label='Train')
-    plt.plot(validation_mse_loss, label='Validation')
-    plt.savefig("Softmax_mul_full_train_mse.pdf")
-    plt.close()
-
-
+    # plt.plot(mse_loss_list, label='Train')
+    # plt.plot(validation_mse_loss, label='Validation')
+    # plt.savefig("Softmax_mul_full_train_mse.pdf")
+    # plt.close()
     logging.info("best train model epoch: "+ str(best_model_epoch_list))
