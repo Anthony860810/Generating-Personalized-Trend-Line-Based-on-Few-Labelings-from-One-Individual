@@ -13,7 +13,7 @@ conda activate env_tykuo
 ## File Description
 Data Folder Link: https://drive.google.com/file/d/1G5NtuQ3SkCx1Q8gMX7Xc-ekGoXFGzndf/view?usp=sharing
 * A4Benchmark: YahooS5 A4 Dataset csv file
-* A4Benchmark_SimulateUser: Generate SImulate User
+* A4Benchmark_SimulateUser: Generate simulate User
 * Done_s2_img_user: The pictures that model predict with differnt user
 * Done_user: The user data  json file and pictures that user draw.
 * mixer_multiple_full: Generate simulate user by GenerateSimulateUser.py
@@ -33,6 +33,10 @@ project
 │   pretrainlstm_model
 │   OurMethod_model
 │
+│
+└───A4Benchmark_SimulateUser
+│   │   A4Benchmark-TS1.csv
+│   │   A4Benchmark-TS2.csv
 │
 └───A4Benchmark
 │   │   A4Benchmark-TS1.csv
@@ -68,6 +72,7 @@ cd s2_img_user29
 mkdir 1_v2 8_v2 12_v2 20_v2 21_v2 66 74 81 88 91
 ```
 ### GenerateSimulateUser
+You need to run this code to generate simulate users' data before you run Pretrain model code and OurMethod code.
 ```
 python GenerateSimulateUser.py
 ```
