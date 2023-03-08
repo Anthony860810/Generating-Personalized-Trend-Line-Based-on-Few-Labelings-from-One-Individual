@@ -1,5 +1,11 @@
 # Generating-Personalized-Trend-Line-Based-on-Few-Labelings-from-One-Individual
 
+This repo contains the code to reproduce the result in the paper:
+
+**Petrel: Personalized Trend Line Estimation with Limited Labels from One Individual** published in PAKDD 2023.
+
+Petrel generates customized trend lines that consider user preferences and input time series shapes. Petrel obtains users' preferred trends by asking users to draw trend lines on limited sample trends. 
+
 ## Setup
 Tested under Python 3.8.13 in Ubuntu.
 
@@ -8,7 +14,6 @@ Install the required packages by
 conda env create -f environment.yaml
 conda activate env_tykuo
 ```
-
 
 ## File Description
 Data Folder Link: https://drive.google.com/file/d/1bc2A4OKITtgTyA1ZDQAnTYl2NLcE7nDC/view?usp=sharing
@@ -20,7 +25,7 @@ Data Folder Link: https://drive.google.com/file/d/1bc2A4OKITtgTyA1ZDQAnTYl2NLcE7
 * trend: original time series dataset which include value, L1 Trend Filtering, HP Filtering, STL trend.
 
 
-## Start
+## Execution
 
 ### Folder Setting
 ```
@@ -146,4 +151,17 @@ python OurMethod_test.py
 ### L1 Trend Filtering & HP Filtering & STL
 ```
 python l1hpstl.py
+```
+## Citation
+
+Please cite our work if you find Petrel useful in your research.
+
+```
+@inproceedings{
+    kuo2023petrel,
+    title={Petrel: Personalized Trend Line Estimation with Limited Labels from One Individual},
+    author={Tong-Yi Kuo and Hung-Hsuan Chen},
+    booktitle={The 27th Pacific-Asia Conference on Knowledge Discovery and Data Mining},
+    year={2023}
+}
 ```
